@@ -1,0 +1,14 @@
+.carteMain {
+    width: 80px;
+    height: 100px;
+    display: inline-block;
+}
+
+.tuile, .carte {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    border: solid 1px;
+    text-align: center;
+}
+
