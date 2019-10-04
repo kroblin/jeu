@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="plateau">
+        <div class="mainJ2">
+            {% for idCarte in  partie.mainJ2 %}
+                <div class="carteMain"
+                     style="background-color:{{ cartes[idCarte].couleur }};">{{ cartes[idCarte].puissance }}</div>
+            {% endfor %}
+        </div>
+        <div class="tuilesJ2">
+            {% for i in 1..9 %}
+                <div class="tuile">-</div>
+            {% endfor %}
+        </div>
+        <div class="cartesJ2">
+            cartes posées (terrain J2)
+        </div>
+        <div class="tuiles">
+            {% for i in 1..9 %}
+                <div class="tuile">Tuile {{ i }}</div>
+            {% endfor %}
+        </div>
+        <div class="cartesJ1">
+            {% for j in 1..3 %}
+                <div class="ligne">
+                    {% for i in 1..9 %}
+                        <div class="carte droppable" data-ligne="{{ j }}" data-colonne="{{ i }}">-</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="tuilesJ2">
+            {% for i in 1..9 %}
+                <div class="tuile ">-</div>
+            {% endfor %}
+        </div>
+        <div class="mainJ1"><br>
+            {% for idCarte in  partie.mainJ1 %}
+                <div class="carteMain draggable"
+                     data-carte="{{ cartes[idCarte].id }}"
+                     style="background-color:{{ cartes[idCarte].couleur }};">{{ cartes[idCarte].puissance }}</div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

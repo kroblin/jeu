@@ -1,62 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for carte in terrainJ1 %}
-        <p>{{ carte.0 }}-Colone {{ carte.1 }}-Ligne {{ carte.2 }}</p>
-    {% endfor %}
-
     <div id="plateau">
-        <div class="mainJ2">
-            {% for idCarte in  partie.mainJ2 %}
-                <div class="carteMain draggable"
-                     style="background-color:{{ cartes[idCarte].couleur }};">{{ cartes[idCarte].puissance }}</div>
-            {% endfor %}
-        </div>
-        <div class="tuilesJ2">
-            {% for i in 1..9 %}
-                <div class="tuile">-</div>
-            {% endfor %}
-        </div>
-        <div class="cartesJ2">
-            {% for j in 1..3 %}
-                <div class="ligne">
-                    {% for i in 1..9 %}
-                        <div class="carte" data-ligne="{{ j }}" data-colonne="{{ i }}">-</div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
-        <div class="tuiles">
-            {% for i in 1..9 %}
-                <div class="tuile">Tuile {{ i }}</div>
-            {% endfor %}
-        </div>
-        <div class="cartesJ1">
-            {% for j in 1..3 %}
-                <div class="ligne">
-                    {% for i in 1..9 %}
-                        <div class="carte droppable" data-ligne="{{ j }}" data-colonne="{{ i }}">-</div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
-        <div class="tuilesJ2">
-            {% for i in 1..9 %}
-                <div class="tuile ">-</div>
-            {% endfor %}
-        </div>
-        <div class="mainJ1"><br>
-            {% for idCarte in  partie.mainJ1 %}
-                <div class="carteMain draggable"
-                     data-carte="{{ cartes[idCarte].id }}"
-                     style="background-color:{{ cartes[idCarte].couleur }};">{{ cartes[idCarte].puissance }}</div>
-            {% endfor %}
-
-        </div>
-
+        {{ render(controller(
+            'App\\Controller\\PartieController::afficherPlateau', {idPartie: partie.id}
+        )) }}
     </div>
-
-
 {% endblock %}
 
 {% block javascripts %}
@@ -80,6 +29,7 @@
                             ligne: $(this).data('ligne') //ligne du plateau de jeu data-ligne
                         },
                         success: function(){
+                            {#$('#plateau').empty().load("{{ path('', {idPartie:partie.id}) }}");#}
                         }
                     })
                 }
