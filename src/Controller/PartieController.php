@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Joueur;
 use App\Entity\Partie;
 use App\Repository\CarteRepository;
 use App\Repository\JoueurRepository;
@@ -62,12 +63,29 @@ class PartieController extends AbstractController
 
         $pioche = $tabCartes;
 
+        for ($i = 1; $i <= 9; $i++) {
+
+        }
+
         $partie->setMainJ1($mainJ1);
         $partie->setMainJ2($mainJ2);
         $partie->setPioche($pioche);
         $partie->setTypeVictoire('');
         $partie->setDateDebut(new \DateTime('now'));
         $partie->setTour(1);
+
+        $terrainJ1 = [];
+        $terrainJ2 = [];
+        for($i = 1; $i <= 9; $i++) {
+            $terrainJ1[$i][1] = 0;
+            $terrainJ1[$i][2] = 0;
+            $terrainJ1[$i][3] = 0;
+            $terrainJ2[$i][1] = 0;
+            $terrainJ2[$i][2] = 0;
+            $terrainJ2[$i][3] = 0;
+        }
+        $partie->setTerrainJ1($terrainJ1);
+        $partie->setTerrainJ2($terrainJ2);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($partie);
@@ -83,33 +101,71 @@ class PartieController extends AbstractController
 //        dump($request->request->get('carte'));
 //        dump($request->request->get('colonne'));
 //        dump($request->request->get('ligne'));
-        $partie = $partieRepository->find($idPartie);
+//        $partie = $partieRepository->find($idPartie);
+//
+//        $terrainJ1 =  $partie->getTerrainJ1();
+//
+//        $cartes[] = [
+//            $request->request->get('carte'),
+//            $request->request->get('colonne'),
+//            $request->request->get('ligne')
+//        ];
+//
+//        $terrainJ1[] = array_pop($cartes);
+//        var_dump($cartes);
+//
+//        $partie->setTerrainJ1($terrainJ1);
+//
+//        $em = $this->getDoctrine()->getManager();
+//        $em->persist($partie);
+//        $em->flush();
 
-        $terrainJ1 =  $partie->getTerrainJ1();
-
-        $cartes[] = [
-            $request->request->get('carte'),
-            $request->request->get('colonne'),
-            $request->request->get('ligne')
-        ];
-
-        $terrainJ1[] = array_pop($cartes);
-        var_dump($cartes);
+        $carte = $request->request->get('carte');
+        $colonne = $request->request->get('colonne');
+        $ligne = $request->request->get('ligne');
 
 
+        $terrainJ1 = $idPartie->getTerrainJ1();
+        $terrainJ1[$colonne][$ligne] = $carte;
+        $idPartie->setTerrainJ1($terrainJ1);
+
+        //Retirer la carte de la main et piocher
+        $mainj1 = $idPartie->getMainJ1();
+        $pioche = $idPartie->getPioche();
+
+            //On retire l'id de la carte déposée de la main
+        $array = array($carte);
+        $mainj1 =  array_diff($mainj1, $array);
 
 
-        $partie->setTerrainJ1($terrainJ1);
+            //On pioche si il y a des cartes
+        if (!empty($pioche)){
+            $mainj1[] = array_pop($pioche);
+        }
 
+
+        $idPartie->setPioche($pioche);
+        $idPartie->setMainJ1($mainj1);
+
+            //Changement de tour
+        $tour = $idPartie->getTour();
+
+        if ($tour == 1){
+            $tour = 2;
+        } elseif ($tour == 2){
+            $tour = 1;
+        }
+        $idPartie->setTour($tour);
 
 
 
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($partie);
+        $em->persist($idPartie);
         $em->flush();
 
     }
+
 
 
 
@@ -118,37 +174,33 @@ class PartieController extends AbstractController
      */
 
 
-    public function affichePartie(
-        CarteRepository $carteRepository,
-        Partie $idPartie,
-        PartieRepository $partieRepository
-    ){
+    public function affichePartie(Partie $idPartie){
+
+        return $this->render('partie/afficher_partie.html.twig', [
+            'partie' => $idPartie
+        ]);
+    }
+
+    public function afficherPlateau(CarteRepository $carteRepository, Partie $idPartie, JoueurRepository $joueurRepository) {
         $cartes = $carteRepository->findAll();
         $tCartes = [];
-        foreach ($cartes as $carte){
+        foreach ($cartes as $carte)
+        {
             $tCartes[$carte->getId()] = $carte;
         }
 
-        $partie = $partieRepository->find($idPartie);
-
-        $tour = $idPartie->getTour();
-        if ($tour == 1){
-            $partie->setTour(2);
-        } else {
-            $partie->setTour(1);
-        }
-
-        $terrainJ1 =  $partie->getTerrainJ1();
-        //var_dump($terrainJ1);
-        //var_dump($terrainJ1[0][1]);
-        //var_dump($tCartes);
+        $joueurs = $joueurRepository->findAll();
+        $user = $this->getUser();
 
 
-
-        return $this->render('partie/afficher_partie.html.twig', [
+        return $this->render('partie/plateau.html.twig', [
             'partie' => $idPartie,
             'cartes' => $tCartes,
-            'terrainJ1' => $terrainJ1
+            'joueurs' => $joueurs,
+            'user' => $user
         ]);
     }
+
+
+
 }
