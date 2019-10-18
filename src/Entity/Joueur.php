@@ -98,7 +98,7 @@ class Joueur implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_JOUEUR';
+        $roles = 'ROLE_JOUEUR';
 
         return json_decode($this->roles);
     }
