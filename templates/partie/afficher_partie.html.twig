@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="plateau">
+
         {{ render(controller(
             'App\\Controller\\PartieController::afficherPlateau', {idPartie: partie.id}
         )) }}
-    </div>
+
 {% endblock %}
 
 {% block javascripts %}
@@ -29,7 +29,7 @@
                             ligne: $(this).data('ligne') //ligne du plateau de jeu data-ligne
                         },
                         success: function(){
-                            {#$('#plateau').empty().load("{{ path('', {idPartie:partie.id}) }}");#}
+                            $('#plateau').empty().load("{{ path('afficher_partie', {idPartie:partie.id}) }}");
                         }
                     })
                 }
