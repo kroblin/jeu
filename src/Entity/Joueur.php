@@ -27,7 +27,7 @@ class Joueur implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="text")
      */
     private $roles = [];
 
@@ -100,12 +100,12 @@ class Joueur implements UserInterface
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_JOUEUR';
 
-        return array_unique($roles);
+        return json_decode($this->roles);
     }
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $this->roles = json_encode($roles);
 
         return $this;
     }
