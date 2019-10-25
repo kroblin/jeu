@@ -4,6 +4,10 @@
     display: inline-block;
 }
 
+.carteMain img {
+    max-width: 100%;
+}
+
 .tuile, .carte {
     width: 100px;
     height: 135px;
@@ -12,9 +16,14 @@
     text-align: center;
 }
 
+.carte img {
+    max-width: 100%;
+}
+
 #plateau {
     margin: 0 auto;
     text-align: center;
 }
+
 
 

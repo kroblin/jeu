@@ -1,5 +1,4 @@
 {% block body %}
-
     {% if user.id != partie.joueur1.id and user.id != partie.joueur2.id  %}
         <p>Petit malin... Vous ne participez pas à cette partie</p>
     {% else %}
@@ -26,7 +25,7 @@
                         <div class="ligne">
                             {% for i in 1..9 %}
                                 <div class="carte" data-ligne="{{ j }}" data-colonne="{{ i }}">
-                                    {{ partie.terrainJ2[i][j] }}
+                                    <img src="../../assets/image/cartes/{{ cartes[partie.terrainJ2[i][j]].image }}" alt="Carte">
                                 </div>
                             {% endfor %}
                         </div>
@@ -42,8 +41,7 @@
                         <div class="ligne">
                             {% for i in 1..9 %}
                                 <div class="carte droppable" data-ligne="{{ j }}" data-colonne="{{ i }}">
-
-                                    {{ partie.terrainJ1[i][j] }}
+                                    <img src="../../assets/image/cartes/{{ cartes[partie.terrainJ1[i][j]].image }}" alt="Carte">
                                 </div>
                             {% endfor %}
                         </div>
@@ -61,7 +59,7 @@
                         <div class="carteMain draggable"
                              data-carte="{{ cartes[idCarte].id }}"
                              style="background-color:{{ cartes[idCarte].couleur }};">
-                            {{ cartes[idCarte].puissance }}
+                            <img src="../../assets/image/cartes/{{ cartes[idCarte].image }}" alt="Carte">
                             {#                  <img src="{{ asset('../../public/assets/image/cartes') ~ {{ cartes[idCarte].image }}  }}" alt="Carte" />#}
 
                         </div>
@@ -92,7 +90,7 @@
                         <div class="ligne">
                             {% for i in 1..9 %}
                                 <div class="carte" data-ligne="{{ j }}" data-colonne="{{ i }}">
-                                    {{ partie.terrainJ2[i][j] }}
+                                    <img src="../../assets/image/cartes/{{ cartes[partie.terrainJ2[i][j]].image }}" alt="Carte">
                                 </div>
                             {% endfor %}
                         </div>
@@ -108,8 +106,7 @@
                         <div class="ligne">
                             {% for i in 1..9 %}
                                 <div class="carte droppable" data-ligne="{{ j }}" data-colonne="{{ i }}">
-
-                                    {{ partie.terrainJ1[i][j] }}
+                                    <img src="../../assets/image/cartes/{{ cartes[partie.terrainJ1[i][j]].image }}" alt="Carte">
                                 </div>
                             {% endfor %}
                         </div>
@@ -127,7 +124,7 @@
                         <div class="carteMain"
                              data-carte="{{ cartes[idCarte].id }}"
                              style="background-color:{{ cartes[idCarte].couleur }};">
-                            {{ cartes[idCarte].puissance }}
+                            <img src="../../assets/image/cartes/{{ cartes[idCarte].image }}" alt="Carte">
                             {# <img src="{{ asset('../../public/assets/image/cartes') ~ {{ cartes[idCarte].image }}  }}" alt="Carte" />#}
 
                         </div>
@@ -159,7 +156,7 @@
                         <div class="ligne">
                             {% for i in 1..9 %}
                                 <div class="carte" data-ligne="{{ j }}" data-colonne="{{ i }}">
-                                    {{ partie.terrainJ1[i][j] }}
+                                    <img src="../../assets/image/cartes/{{ cartes[partie.terrainJ1[i][j]].image }}" alt="Carte">
                                 </div>
                             {% endfor %}
                         </div>
@@ -175,8 +172,7 @@
                         <div class="ligne">
                             {% for i in 1..9 %}
                                 <div class="carte droppable" data-ligne="{{ j }}" data-colonne="{{ i }}">
-
-                                    {{ partie.terrainJ2[i][j] }}
+                                    <img src="../../assets/image/cartes/{{ cartes[partie.terrainJ2[i][j]].image }}" alt="Carte">
                                 </div>
                             {% endfor %}
                         </div>
@@ -194,7 +190,8 @@
                         <div class="carteMain"
                              data-carte="{{ cartes[idCarte].id }}"
                              style="background-color:{{ cartes[idCarte].couleur }};">
-                            {{ cartes[idCarte].puissance }}
+
+                            <img src="../../assets/image/cartes/{{ cartes[idCarte].image }}" alt="Carte">
                             {#                  <img src="{{ asset('../../public/assets/image/cartes') ~ {{ cartes[idCarte].image }}  }}" alt="Carte" />#}
 
                         </div>
@@ -225,7 +222,7 @@
                         <div class="ligne">
                             {% for i in 1..9 %}
                                 <div class="carte" data-ligne="{{ j }}" data-colonne="{{ i }}">
-                                    {{ partie.terrainJ1[i][j] }}
+                                    <img src="../../assets/image/cartes/{{ cartes[partie.terrainJ1[i][j]].image }}" alt="Carte">
                                 </div>
                             {% endfor %}
                         </div>
@@ -241,8 +238,7 @@
                         <div class="ligne">
                             {% for i in 1..9 %}
                                 <div class="carte droppable" data-ligne="{{ j }}" data-colonne="{{ i }}">
-
-                                    {{ partie.terrainJ2[i][j] }}
+                                    <img src="../../assets/image/cartes/{{ cartes[partie.terrainJ2[i][j]].image }}" alt="Carte">
                                 </div>
                             {% endfor %}
                         </div>
@@ -260,8 +256,8 @@
                         <div class="carteMain draggable"
                              data-carte="{{ cartes[idCarte].id }}"
                              style="background-color:{{ cartes[idCarte].couleur }};">
-                            {{ cartes[idCarte].puissance }}
-{#                             <img src="{{ asset('../../public/assets/image/cartes/') ~ {{ cartes[idCarte].image }}  }}" alt="Carte" />#}
+                            <img src="../../assets/image/cartes/{{ cartes[idCarte].image }}" alt="Carte">
+                            {#                             <img src="{{ asset('../../public/assets/image/cartes/') ~ {{ cartes[idCarte].image }}  }}" alt="Carte" />#}
 
                         </div>
                     {% endfor %}
@@ -281,4 +277,3 @@
 {% block title %}
 
 {% endblock %}
-

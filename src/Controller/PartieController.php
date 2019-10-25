@@ -97,72 +97,123 @@ class PartieController extends AbstractController
      * @param Request $request
      * @Route("/depose_carte/{idPartie}", name="depose_carte")
      */
-    public function deposeCarte(Request $request, Partie $idPartie, PartieRepository $partieRepository) {
-//        dump($request->request->get('carte'));
-//        dump($request->request->get('colonne'));
-//        dump($request->request->get('ligne'));
-//        $partie = $partieRepository->find($idPartie);
-//
-//        $terrainJ1 =  $partie->getTerrainJ1();
-//
-//        $cartes[] = [
-//            $request->request->get('carte'),
-//            $request->request->get('colonne'),
-//            $request->request->get('ligne')
-//        ];
-//
-//        $terrainJ1[] = array_pop($cartes);
-//        var_dump($cartes);
-//
-//        $partie->setTerrainJ1($terrainJ1);
-//
-//        $em = $this->getDoctrine()->getManager();
-//        $em->persist($partie);
-//        $em->flush();
+    public function deposeCarte(Request $request, Partie $idPartie, PartieRepository $partieRepository, CarteRepository $carteRepository) {
 
         $carte = $request->request->get('carte');
         $colonne = $request->request->get('colonne');
         $ligne = $request->request->get('ligne');
 
 
-        $terrainJ1 = $idPartie->getTerrainJ1();
-        $terrainJ1[$colonne][$ligne] = $carte;
-        $idPartie->setTerrainJ1($terrainJ1);
-
-        //Retirer la carte de la main et piocher
-        $mainj1 = $idPartie->getMainJ1();
-        $pioche = $idPartie->getPioche();
-
-            //On retire l'id de la carte déposée de la main
-        $array = array($carte);
-        $mainj1 =  array_diff($mainj1, $array);
-
-
-            //On pioche si il y a des cartes
-        if (!empty($pioche)){
-            $mainj1[] = array_pop($pioche);
-        }
-
-
-        $idPartie->setPioche($pioche);
-        $idPartie->setMainJ1($mainj1);
-
-            //Changement de tour
+        //Gestion du jeu en fonction du tour
         $tour = $idPartie->getTour();
 
         if ($tour == 1){
+            //ON défini le terrain du joueur 1
+            $terrainJ1 = $idPartie->getTerrainJ1();
+            $terrainJ1[$colonne][$ligne] = $carte;
+            $idPartie->setTerrainJ1($terrainJ1);
+
+            //Retirer la carte de la main et piocher
+            $mainj1 = $idPartie->getMainJ1();
+            $pioche = $idPartie->getPioche();
+
+            //On retire l'id de la carte déposée de la main
+            $array = array($carte);
+            $mainj1 =  array_diff($mainj1, $array);
+
+            //On pioche si il y a des cartes
+            if (!empty($pioche)){
+                $mainj1[] = array_pop($pioche);
+            }
+
+            //Fin de tour
             $tour = 2;
+            $idPartie->setTour($tour);
+            $idPartie->setMainJ1($mainj1);
         } elseif ($tour == 2){
+            //ON défini le terrain du joueur
+            $terrainJ2 = $idPartie->getTerrainJ2();
+            $terrainJ2[$colonne][$ligne] = $carte;
+            $idPartie->setTerrainJ2($terrainJ2);
+
+            //Retirer la carte de la main et piocher
+            $mainj2 = $idPartie->getMainJ2();
+            $pioche = $idPartie->getPioche();
+
+            //On retire l'id de la carte déposée de la main
+            $array = array($carte);
+            $mainj2 =  array_diff($mainj2, $array);
+
+            //On pioche si il y a des cartes
+            if (!empty($pioche)){
+                $mainj2[] = array_pop($pioche);
+            }
+
+            //Fin de tour
             $tour = 1;
+            $idPartie->setTour($tour);
+            $idPartie->setMainJ2($mainj2);
         }
-        $idPartie->setTour($tour);
+        $idPartie->setPioche($pioche);
+
+
+        $cartes = $carteRepository->findAll();
+
+//        dump($cartes);
+
+
+        //Condition de capture des tuiles
+        sort($terrainJ1[$colonne]);
+
+//        dump($terrainJ1[$colonne]);
+
+
+        for ($l = 0; $l <= 2; $l++) {
+            //On évite la surcharge de calcul en vérifiant si il y a bien 3 cartes
+            if (!empty($terrainJ1[$colonne][0])) {
+//                dump($cartes[$terrainJ1[$colonne][$l]]->getCouleur());
+                $couleur[] = $cartes[$terrainJ1[$colonne][$l]]->getCouleur();
+                $puissance[] = $cartes[$terrainJ1[$colonne][$l]]->getPuissance();
+
+            } else {
+                dump('la colonne n\'est pas complète');
+            }
+
+        }
+
+        dump($couleur);
+        dump($puissance);
+
+        if ($couleur[0] = $couleur[1] = $couleur[2]) {
+
+        }
+
+
+//
+//        for ($i=1; $i <= 9; $i++) {
+//            sort($terrainJ1[$i]);
+//
+//            var_dump($cartes[$terrainJ1[$i][2]]);
+//            dump($cartes[$terrainJ1[$i][2]]->getCouleur());
+//
+//
+//        }
+
+
+
+
+
+
+
+
+
 
 
 
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($idPartie);
-        $em->flush();
+//        $em->flush();
 
     }
 

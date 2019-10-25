@@ -2,9 +2,9 @@
 
 {% block body %}
 
-        {{ render(controller(
-            'App\\Controller\\PartieController::afficherPlateau', {idPartie: partie.id}
-        )) }}
+    {{ render(controller(
+        'App\\Controller\\PartieController::afficherPlateau', {idPartie: partie.id}
+    )) }}
 
 {% endblock %}
 
@@ -29,7 +29,7 @@
                             ligne: $(this).data('ligne') //ligne du plateau de jeu data-ligne
                         },
                         success: function(){
-                            $('#plateau').empty().load("{{ path('afficher_partie', {idPartie:partie.id}) }}");
+                            {#$('#plateau').empty().load("{{ path('afficher_partie', {idPartie:partie.id}) }}");#}
                         }
                     })
                 }
@@ -42,4 +42,3 @@
 {% block title %}
 
 {% endblock %}
-
